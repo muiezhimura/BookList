@@ -2,7 +2,7 @@ package id.ac.booklist.datamodel;
 
 import id.ac.booklist.service.Action;
 
-public class TeksBook extends BukuItem implements Action{
+public class TeksBook extends BukuItem {
 	private String id_buku;
 	private String judul;
 	private int tahun;
@@ -48,19 +48,5 @@ public class TeksBook extends BukuItem implements Action{
 	public void setKategori(Kategori kategori) {
 		this.kategori = kategori;
 	}
-
-	@Override
-	public void cariBuku(BukuItem buku) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void editBuku(BukuItem buku) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
 	
 }

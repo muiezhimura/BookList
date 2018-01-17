@@ -1,5 +1,7 @@
 package id.ac.booklist.datamodel;
 
+import java.util.List;
+
 import id.ac.booklist.service.Action;
 
 public class Majalah extends BukuItem implements Action{	
@@ -31,20 +33,11 @@ public class Majalah extends BukuItem implements Action{
 	}
 
 	@Override
-	public void cariBuku(BukuItem buku) {
+	public BukuItem getBukuItem(String judul) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
-	@Override
-	public void editBuku(BukuItem buku) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
-	
-	
+
 
 }

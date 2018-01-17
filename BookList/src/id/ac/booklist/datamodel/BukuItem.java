@@ -1,6 +1,10 @@
 package id.ac.booklist.datamodel;
 
-public abstract class BukuItem {
+import java.util.List;
+
+import id.ac.booklist.service.Action;
+
+public class BukuItem{
 	protected String id_buku;
 	protected String judul;
 	protected int tahun;
@@ -32,6 +36,5 @@ public abstract class BukuItem {
 	public String toString() {
 		return "BukuItem [ ID=" +id_buku+" judul="+judul+" tahun="+tahun +" ]\n";
 	}
-
 	
 }
