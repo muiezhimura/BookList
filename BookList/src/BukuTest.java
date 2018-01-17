@@ -35,8 +35,7 @@ public class BukuTest {
 		System.out.println(items.toString());
 		
 		
-		for (BukuItem item: items) {
-			
+		for (BukuItem item: items) {			
 			Pattern pattern = Pattern.compile("a");
 	        Matcher matcher = pattern.matcher(item.getJudul());
 			
