@@ -50,9 +50,17 @@ public class BukuTest {
 //		as.TulisFile(as.getAllBukuItem());
 		
 		
-        for(BukuItem tmp: as.BacaFile()){
-            System.out.println("Baca File "+tmp.toString());
-        }
+		try {
+			for(BukuItem tmp: as.BacaFile()){
+	            System.out.println("Baca File "+tmp.toString());
+	        }
+			
+		} catch (FileNotFoundException e) {
+			
+			
+		}
+		
+        
 		
 		
 		

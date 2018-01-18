@@ -1,5 +1,6 @@
 package id.ac.booklist.service;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -36,9 +37,14 @@ public class ActionImpement implements BookColectionService, Serializable{
 	}
 
 	@Override
-	public void addBukuItem(BukuItem item) throws BookException {
-		ArrayList<BukuItem> AlBi = new ArrayList<>(bukuitems);
-		AlBi = BacaFile();
+	public void addBukuItem(BukuItem item) throws BookException  {
+		ArrayList<BukuItem> AlBi = new ArrayList<>();
+		try {
+			AlBi = BacaFile();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		boolean found = AlBi.contains(item);
 		if(!found) {
 			AlBi.add(item);
@@ -168,23 +174,26 @@ public class ActionImpement implements BookColectionService, Serializable{
 	}
 
 	@Override
-	public ArrayList<BukuItem> BacaFile() throws BookException {
+	public ArrayList<BukuItem> BacaFile() throws FileNotFoundException {
+		
 		ArrayList<BukuItem> arraylist=null;
 		FileInputStream fis = null;
         ObjectInputStream ois = null;
  
         // creating List reference to hold AL values after de-serialization 
- 
+        
+        File file = new File("ArrayListOfCustomer.ser");     
         try {
-            // reading binary data
-            fis = new FileInputStream("ArrayListOfCustomer.ser");
- 
-            // converting binary-data to java-object
-            ois = new ObjectInputStream(fis);
- 
-            // reading object's value and casting ArrayList<Customer>
-            arraylist = (ArrayList<BukuItem>) ois.readObject();
-            
+        		if (file.exists()) { 
+	            fis = new FileInputStream(file);
+	            ois = new ObjectInputStream(fis);
+	            arraylist = (ArrayList<BukuItem>) ois.readObject(); 
+	        } else {
+	        	    FileOutputStream fos = new FileOutputStream("ArrayListOfCustomer.ser");
+	        	    ObjectOutputStream oos = new ObjectOutputStream(fos);
+	            oos.flush();
+	            oos.close();
+	        }
         } 
         catch (FileNotFoundException fnfex) {
             fnfex.printStackTrace();
@@ -195,6 +204,24 @@ public class ActionImpement implements BookColectionService, Serializable{
         catch (ClassNotFoundException ccex) {
             ccex.printStackTrace();
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+ 
+        
         return arraylist;
 	}
 	

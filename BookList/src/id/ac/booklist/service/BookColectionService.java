@@ -1,5 +1,6 @@
 package id.ac.booklist.service;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import id.ac.booklist.datamodel.BukuItem;
@@ -15,5 +16,5 @@ public interface BookColectionService {
 	ArrayList<BukuItem> getBukuItemByKategori(Kategori kategori) throws BookException;
 	ArrayList<BukuItem> getSortBukuByJudul() throws BookException;
 	ArrayList<BukuItem> getBukuByTahun(int tahun) throws BookException;
-	ArrayList<BukuItem> BacaFile() throws BookException;
+	ArrayList<BukuItem> BacaFile() throws FileNotFoundException;
 }
