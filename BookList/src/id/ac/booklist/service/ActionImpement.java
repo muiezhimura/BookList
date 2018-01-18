@@ -1,17 +1,19 @@
 package id.ac.booklist.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import id.ac.booklist.datamodel.BukuItem;
+import id.ac.booklist.datamodel.Kategori;
+import id.ac.booklist.datamodel.TeksBook;
 
 public class ActionImpement implements BookColectionService {
 	private ArrayList<BukuItem> bukuitems;
+	private ArrayList<Object> objectitems;
 	private final static ActionImpement instance = new ActionImpement();
-	
-	/// input data
-	
 	
 	public static ActionImpement getInstance() {
 		return instance;
@@ -58,6 +60,7 @@ public class ActionImpement implements BookColectionService {
 			Matcher matcher = pattern.matcher(item.getJudul());
 			
 			if (matcher.find()) {
+				
 				resultitems.add(item);
 				a++;
 			}
@@ -71,9 +74,56 @@ public class ActionImpement implements BookColectionService {
 	}
 
 	@Override
-	public ArrayList<BukuItem> getBukuItemByKategori(String kategori) throws BookException{
+	public ArrayList<BukuItem> getBukuItemByKategori(Kategori kategori) throws BookException{
+		
+		int a=0;		
+		ArrayList<BukuItem> resultitems = new ArrayList();
+		
+		for (BukuItem item: bukuitems) {
+			if (item.getKategori()==kategori) {
+				resultitems.add(item);
+				a++;
+			}
+		}
+		
+		if (a>0) {
+			return resultitems;
+		} else {
+			
+			throw new BookException(" Tidak ditemukan buku dengan kategori "+ kategori);
+		}		
+		
 		// TODO Auto-generated method stub
-		return null;
+		
+	}
+
+	@Override
+	public ArrayList<BukuItem> getSortBukuByJudul() throws BookException {
+		/*
+		 * Labmda Expression ArrayList.sort
+		 */
+		bukuitems.sort(Comparator.comparing(BukuItem::getJudul));
+		return bukuitems;
+	}
+
+	@Override
+	public ArrayList<BukuItem> getBukuByTahun(int tahun) throws BookException {
+		int a=0;		
+		ArrayList<BukuItem> resultitems = new ArrayList();
+		
+		for (BukuItem item: bukuitems) {
+			if (item.getTahun()==tahun) {
+				resultitems.add(item);
+				a++;
+			}
+		}
+		
+		if (a>0) {
+			return resultitems;
+		} else {
+			
+			throw new BookException(" Tidak ditemukan buku dengan tahun "+ tahun);
+		}	
 	}
 
 }

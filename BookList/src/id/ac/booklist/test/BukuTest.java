@@ -22,12 +22,7 @@ public class BukuTest {
 		
 		ArrayList<BukuItem> items = new ArrayList<>();
 		
-		BukuItem bukuitem = new TeksBook("01","Pemrograman",2018);
-		TeksBook bi=(TeksBook)bukuitem;
-		bi.setKategori(Kategori.SCIENS);
-		bi.setPenerbit("Airlangga");
-		bi.setPengarang("Izzuddin");
-		
+		BukuItem bukuitem = new BukuItem("01","Pemrograman",Kategori.INFORMATICS,2017);
 		
 		try {
 			as.addBukuItem(bukuitem);
@@ -35,14 +30,7 @@ public class BukuTest {
 			System.out.println(e);
 		}
 		
-		
-		
-		BukuItem bukuitem2 = new TeksBook("01","Java",2018);
-		TeksBook bi2=(TeksBook)bukuitem;
-		bi.setKategori(Kategori.SCIENS);
-		bi.setPenerbit("Airlangga");
-		bi.setPengarang("Izzuddin");
-		
+		BukuItem bukuitem2 = new BukuItem("01","Java",Kategori.INFORMATICS,2018);
 		
 		try {
 			as.addBukuItem(bukuitem2);
@@ -64,11 +52,31 @@ public class BukuTest {
 		
 		
 		try {
-			System.out.println("Hasil Pendarian \n"+ as.getBukuItem("J").toString());
+			System.out.println("Hasil Pendarian \n"+ as.getBukuItem("Jb").toString());
 		} catch (BookException e) {
 			System.out.println(e);
 		}
 		
+		//urutkan berdasarkan judul
+		try {
+			System.out.println("Hasil Urut \n"+ as.getSortBukuByJudul().toString());
+		} catch (BookException e) {
+			System.out.println(e);
+		}
+		
+		// cari kategori
+		try {
+			System.out.println("Hasil kategori \n"+ as.getBukuItemByKategori(Kategori.INFORMATICS).toString());
+		} catch (BookException e) {
+			System.out.println(e);
+		}
+		
+		// cari kategori
+				try {
+					System.out.println("Hasil Tahun \n"+ as.getBukuByTahun(2017).toString());
+				} catch (BookException e) {
+					System.out.println(e);
+				}
 		
 	}
 

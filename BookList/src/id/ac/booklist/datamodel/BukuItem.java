@@ -8,10 +8,12 @@ public class BukuItem{
 	protected String id_buku;
 	protected String judul;
 	protected int tahun;
-	public BukuItem(String id_buku, String judul, int tahun) {
+	protected Kategori kategori;
+	public BukuItem(String id_buku, String judul,Kategori kategori, int tahun) {
 		super();
 		this.id_buku = id_buku;
 		this.judul = judul;
+		this.kategori = kategori;
 		this.tahun = tahun;
 	}
 	public String getId_buku() {
@@ -32,9 +34,19 @@ public class BukuItem{
 	public void setTahun(int tahun) {
 		this.tahun = tahun;
 	}
-	
-	public String toString() {
-		return "BukuItem [ ID=" +id_buku+" judul="+judul+" tahun="+tahun +" ]\n";
+	public Kategori getKategori() {
+		return kategori;
 	}
+	public void setKategori(Kategori kategori) {
+		this.kategori = kategori;
+	}
+	@Override
+	public String toString() {
+		return "BukuItem [id_buku=" + id_buku + ", judul=" + judul + ", tahun=" + tahun + ", kategori=" + kategori
+				+ "]";
+	}
+	
+	
+	
 	
 }

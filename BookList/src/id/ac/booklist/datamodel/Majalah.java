@@ -8,12 +8,13 @@ public class Majalah extends BukuItem implements Action{
 	private String id_buku;
 	private String judul;
 	private int tahun;
+	private Kategori kategori;
 	
 	private int tanggal;
 	private int bulan;
 	
-	public Majalah (String id_buku, String judul, int tahun) {
-		super(id_buku, judul, tahun);	
+	public Majalah (String id_buku, String judul,Kategori kategori , int tahun) {
+		super(id_buku, judul, kategori, tahun);	
 	}
 
 	public int getTahun() {

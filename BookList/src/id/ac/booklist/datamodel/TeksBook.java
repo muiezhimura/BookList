@@ -13,8 +13,8 @@ public class TeksBook extends BukuItem {
 	private String isbn;
 	private String penerbit;
 	
-	public TeksBook (String id_buku, String judul, int tahun) {
-		super(id_buku, judul, tahun);	
+	public TeksBook (String id_buku, String judul, Kategori kategori, int tahun) {
+		super(id_buku, judul, kategori, tahun);	
 	}
 
 	public String getPengarang() {

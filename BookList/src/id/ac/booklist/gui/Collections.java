@@ -53,7 +53,7 @@ public class Collections extends JFrame{
 		final ActionImpement as;
 		as = ActionImpement.getInstance();
 		
-		BukuItem bukuitem = new TeksBook("01","Pemrograman",2018);
+		BukuItem bukuitem = new TeksBook("01","Pemrograman",Kategori.INFORMATICS,2018);
 		TeksBook bi=(TeksBook)bukuitem;
 		bi.setKategori(Kategori.SCIENS);
 		bi.setPenerbit("Airlangga");
@@ -65,7 +65,7 @@ public class Collections extends JFrame{
 			System.out.println(e);
 		}
 		
-		BukuItem bukuitem2 = new TeksBook("01","Pemrograman",2018);
+		BukuItem bukuitem2 = new TeksBook("01","Aljabar",Kategori.SCIENS,2018);
 		TeksBook bi2=(TeksBook)bukuitem;
 		bi2.setKategori(Kategori.SCIENS);
 		bi2.setPenerbit("Airlangga");
