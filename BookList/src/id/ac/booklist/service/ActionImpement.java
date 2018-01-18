@@ -1,5 +1,12 @@
 package id.ac.booklist.service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,7 +17,7 @@ import id.ac.booklist.datamodel.BukuItem;
 import id.ac.booklist.datamodel.Kategori;
 import id.ac.booklist.datamodel.TeksBook;
 
-public class ActionImpement implements BookColectionService {
+public class ActionImpement implements BookColectionService, Serializable{
 	private ArrayList<BukuItem> bukuitems;
 	private ArrayList<Object> objectitems;
 	private final static ActionImpement instance = new ActionImpement();
@@ -21,16 +28,24 @@ public class ActionImpement implements BookColectionService {
 
 	public ActionImpement() {
 		bukuitems = new ArrayList<>();
+		try {
+			bukuitems = BacaFile();	
+		} catch (Exception e) {
+			//throw new BookException(" File tidak ditemukan");	
+		}	
 	}
 
 	@Override
 	public void addBukuItem(BukuItem item) throws BookException {
-		boolean found = bukuitems.contains(item);
+		ArrayList<BukuItem> AlBi = new ArrayList<>(bukuitems);
+		AlBi = BacaFile();
+		boolean found = AlBi.contains(item);
 		if(!found) {
-			bukuitems.add(item);
+			AlBi.add(item);
 		} else {
 			throw new BookException(item.getJudul() + " sudah terdaftar");
 		}	
+		TulisFile(AlBi);
 	}
 
 	@Override
@@ -125,5 +140,63 @@ public class ActionImpement implements BookColectionService {
 			throw new BookException(" Tidak ditemukan buku dengan tahun "+ tahun);
 		}	
 	}
+
+	@Override
+	public void TulisFile(ArrayList<BukuItem> items) throws BookException {
+		FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+ 
+        try {
+            // for writing or saving binary data
+            fos = new FileOutputStream("ArrayListOfCustomer.ser");
+ 
+            // converting java-object to binary-format 
+            oos = new ObjectOutputStream(fos);
+ 
+            // writing or saving ArrayList values to stream
+            oos.writeObject(items);
+            oos.flush();
+            oos.close();
+        } 
+        catch (FileNotFoundException fnfex) {
+            fnfex.printStackTrace();
+        }
+        catch (IOException ioex) {
+            ioex.printStackTrace();
+        }
+		
+	}
+
+	@Override
+	public ArrayList<BukuItem> BacaFile() throws BookException {
+		ArrayList<BukuItem> arraylist=null;
+		FileInputStream fis = null;
+        ObjectInputStream ois = null;
+ 
+        // creating List reference to hold AL values after de-serialization 
+ 
+        try {
+            // reading binary data
+            fis = new FileInputStream("ArrayListOfCustomer.ser");
+ 
+            // converting binary-data to java-object
+            ois = new ObjectInputStream(fis);
+ 
+            // reading object's value and casting ArrayList<Customer>
+            arraylist = (ArrayList<BukuItem>) ois.readObject();
+            
+        } 
+        catch (FileNotFoundException fnfex) {
+            fnfex.printStackTrace();
+        }
+        catch (IOException ioex) {
+            ioex.printStackTrace();
+        } 
+        catch (ClassNotFoundException ccex) {
+            ccex.printStackTrace();
+        }
+        return arraylist;
+	}
+	
 
 }

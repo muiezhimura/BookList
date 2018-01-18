@@ -1,10 +1,11 @@
 package id.ac.booklist.datamodel;
 
+import java.io.Serializable;
 import java.util.List;
 
 import id.ac.booklist.service.Action;
 
-public class BukuItem{
+public class BukuItem implements Serializable {
 	protected String id_buku;
 	protected String judul;
 	protected int tahun;
