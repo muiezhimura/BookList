@@ -40,7 +40,7 @@ public class Collections extends JFrame{
 	private JButton btnSortByYear;
 	private JTextField SearchField;
 	private JButton btnSearch;
-	private JComboBox categoriBox;
+	private JComboBox<Kategori> categoriBox;
 	private JLabel lblJudul;
 	private JLabel lblPengarang;
 	private JLabel lblKategori;
@@ -159,7 +159,7 @@ public class Collections extends JFrame{
 		contentPane.add(tahunField);
 		tahunField.setColumns(10);
 		
-		categoriBox = new JComboBox();
+		categoriBox = new JComboBox(Kategori.values());
 		categoriBox.setBounds(10, 224, 243, 30);
 		contentPane.add(categoriBox);
 		
