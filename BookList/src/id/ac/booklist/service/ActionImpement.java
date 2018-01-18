@@ -50,8 +50,7 @@ public class ActionImpement implements BookColectionService {
 
 	@Override
 	public ArrayList<BukuItem> getBukuItem(String judul) throws BookException {
-		int a=0;
-		
+		int a=0;		
 		ArrayList<BukuItem> resultitems = new ArrayList();
 		
 		for (BukuItem item: bukuitems) {			
@@ -68,16 +67,7 @@ public class ActionImpement implements BookColectionService {
 			return resultitems;
 		} else {
 			throw new BookException(" Tidak ditemukan buku dengan judul "+ judul);
-		}
-//		
-//		if (matcher.find()) {
-//			System.out.println("KETEMU");
-//		} else {
-//			System.out.println("Tidak ketemu");
-//		}
-		
-
-		
+		}		
 	}
 
 	@Override
