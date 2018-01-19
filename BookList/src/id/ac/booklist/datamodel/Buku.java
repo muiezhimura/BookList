@@ -2,7 +2,6 @@ package id.ac.booklist.datamodel;
 
 import java.util.List;
 
-import id.ac.booklist.service.Action;
 
 public class Buku{
 	protected String id_buku;

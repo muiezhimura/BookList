@@ -1,6 +1,5 @@
 package id.ac.booklist.datamodel;
 
-import id.ac.booklist.service.Action;
 
 public class TeksBook extends BukuItem {
 	private String id_buku;

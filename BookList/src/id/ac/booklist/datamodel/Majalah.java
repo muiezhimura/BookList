@@ -2,9 +2,8 @@ package id.ac.booklist.datamodel;
 
 import java.util.List;
 
-import id.ac.booklist.service.Action;
 
-public class Majalah extends BukuItem implements Action{	
+public class Majalah extends BukuItem {	
 	private String id_buku;
 	private String judul;
 	private int tahun;
@@ -32,13 +31,5 @@ public class Majalah extends BukuItem implements Action{
 	public void setTanggal(int tanggal) {
 		this.tanggal = tanggal;
 	}
-
-	@Override
-	public BukuItem getBukuItem(String judul) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 
 }

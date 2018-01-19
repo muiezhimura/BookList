@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +17,13 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
+import id.ac.booklist.datamodel.Buku;
 import id.ac.booklist.datamodel.BukuItem;
 import id.ac.booklist.datamodel.Kategori;
+import id.ac.booklist.datamodel.TableModel;
 import id.ac.booklist.datamodel.TeksBook;
 import id.ac.booklist.service.ActionImpement;
 import id.ac.booklist.service.BookException;
@@ -28,8 +33,10 @@ import java.awt.Container;
 import java.awt.Dialog;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 
 public class Collections extends JFrame{
 	private JTextField judulField;
@@ -46,12 +53,18 @@ public class Collections extends JFrame{
 	private JLabel lblKategori;
 	private JLabel lblTahunTerbit;
 	private JButton btnSimpan;
-	private JList BookList;
 	List<BukuItem> items = new ArrayList<>();
+	private JTable table;
+	private JTable tableModel2;
+	private JTable tableModel3;
+	private JTable table_1;
+	private JTable table_2;
 	
 	public Collections() {
 		final ActionImpement as;
 		as = ActionImpement.getInstance();
+		
+		ArrayList<BukuItem> temparray=new ArrayList<BukuItem>();
 		
 		BukuItem bukuitem = new TeksBook("01","Pemrograman",Kategori.INFORMATICS,2018);
 		TeksBook bi=(TeksBook)bukuitem;
@@ -82,7 +95,36 @@ public class Collections extends JFrame{
 		items.add(bukuitem2);
 		System.out.println(items);
 		
+		
+		try {
+			temparray = as.BacaFile();
+	        Object rowData[] = new Object[4];
+	        
+	        JTable table = new JTable();
+			TableModel model = new TableModel(temparray);
+			table.setModel(model);
+			
+			for(BukuItem tmp: temparray){
+
+				
+				
+	            System.out.println("Baca File "+tmp.toString());
+	        }
+			
+		} catch (FileNotFoundException e) {
+			
+			
+		}
+		
 		CreateUI();
+		
+		TableModel tb = new TableModel(temparray);
+		table_2.setModel(tb);
+//		JScrollPane scrollPane = new JScrollPane(table_2);
+//		JPanel panel = new JPanel();
+//		panel.add(scrollPane);
+		
+		
 	}
 	
 	private void CreateUI() {
@@ -131,10 +173,6 @@ public class Collections extends JFrame{
 		});
 		btnSearch.setBounds(685, 11, 89, 30);
 		contentPane.add(btnSearch);
-		
-		BookList = new JList();
-		BookList.setBounds(263, 52, 511, 398);
-		contentPane.add(BookList);
 
 		
 		JSeparator separator = new JSeparator();
@@ -187,6 +225,20 @@ public class Collections extends JFrame{
 		});
 		btnSimpan.setBounds(144, 414, 109, 36);
 		contentPane.add(btnSimpan);
+		
+		table_2 = new JTable();
+		table_2.setBounds(263, 52, 511, 420);
+		getContentPane().add(table_2);
+		
+		
+		
+//		table = new JTable();
+//		table.setBounds(268, 66, 491, 406);
+//		getContentPane().add(table);
+		
+		
+//		DefaultTableModel tableModel_2 = new DefaultTableModel(header, 0);
+		//table.add(tableModel_2);
 		
 		setTitle("Book Collections");
 		setVisible(true);
