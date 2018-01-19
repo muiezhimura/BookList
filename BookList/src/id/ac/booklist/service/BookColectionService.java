@@ -7,7 +7,7 @@ import id.ac.booklist.datamodel.BukuItem;
 import id.ac.booklist.datamodel.Kategori;
 
 public interface BookColectionService {
-	void addBukuItem (BukuItem item) throws BookException;
+	void addBukuItem (BukuItem item) throws BookException ;
 	void updateBukuItem (BukuItem item) throws BookException;
 	void removeBukuItem (BukuItem item) throws BookException;
 	void TulisFile (ArrayList<BukuItem> items) throws BookException;

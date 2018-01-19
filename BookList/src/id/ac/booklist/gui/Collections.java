@@ -6,21 +6,20 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
-import id.ac.booklist.datamodel.Buku;
 import id.ac.booklist.datamodel.BukuItem;
 import id.ac.booklist.datamodel.Kategori;
 import id.ac.booklist.datamodel.TableModel;
@@ -33,16 +32,17 @@ import java.awt.Container;
 import java.awt.Dialog;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import java.awt.Font;
 import javax.swing.JTable;
 
 public class Collections extends JFrame{
+	private JTextField kodeField;
 	private JTextField judulField;
-	private JTextField pengarangField;
 	private JTextField tahunField;
-	private JButton btnAdd;
+	private JButton btnDisplayAll;
 	private JButton btnSortByTitle;
 	private JButton btnSortByYear;
 	private JTextField SearchField;
@@ -53,77 +53,26 @@ public class Collections extends JFrame{
 	private JLabel lblKategori;
 	private JLabel lblTahunTerbit;
 	private JButton btnSimpan;
-	List<BukuItem> items = new ArrayList<>();
+	private JTextArea textPesan;
+	private JTextArea textDisplay;
+	ArrayList<BukuItem> items = new ArrayList<>();
+	final ActionImpement as;
 	private JTable table;
-	private JTable tableModel2;
-	private JTable tableModel3;
-	private JTable table_1;
-	private JTable table_2;
+	private TableModel tb;
+
 	
 	public Collections() {
-		final ActionImpement as;
 		as = ActionImpement.getInstance();
-		
-		ArrayList<BukuItem> temparray=new ArrayList<BukuItem>();
-		
-		BukuItem bukuitem = new TeksBook("01","Pemrograman",Kategori.INFORMATICS,2018);
-		TeksBook bi=(TeksBook)bukuitem;
-		bi.setKategori(Kategori.SCIENS);
-		bi.setPenerbit("Airlangga");
-		bi.setPengarang("Izzuddin");
-		
-		try {
-			as.addBukuItem(bukuitem);
-		} catch (BookException e) {
-			System.out.println(e);
-		}
-		
-		BukuItem bukuitem2 = new TeksBook("01","Aljabar",Kategori.SCIENS,2018);
-		TeksBook bi2=(TeksBook)bukuitem;
-		bi2.setKategori(Kategori.SCIENS);
-		bi2.setPenerbit("Airlangga");
-		bi2.setPengarang("Izzuddin");
-		
-		
-		try {
-			as.addBukuItem(bukuitem);
-		} catch (BookException e) {
-			System.out.println(e);
-		}
-		
-		items.add(bukuitem);
-		items.add(bukuitem2);
-		System.out.println(items);
-		
-		
-		try {
-			temparray = as.BacaFile();
-	        Object rowData[] = new Object[4];
-	        
-	        JTable table = new JTable();
-			TableModel model = new TableModel(temparray);
-			table.setModel(model);
-			
-			for(BukuItem tmp: temparray){
-
-				
-				
-	            System.out.println("Baca File "+tmp.toString());
-	        }
-			
-		} catch (FileNotFoundException e) {
-			
-			
-		}
-		
 		CreateUI();
-		
-		TableModel tb = new TableModel(temparray);
-		table_2.setModel(tb);
-//		JScrollPane scrollPane = new JScrollPane(table_2);
-//		JPanel panel = new JPanel();
-//		panel.add(scrollPane);
-		
+		try {
+			items = as.getAllBukuItem();
+			 tb = new TableModel(items);
+			
+		} catch (BookException e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+		displayBookList();
 		
 	}
 	
@@ -140,23 +89,31 @@ public class Collections extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setMinimumSize(new Dimension(800, 500));
 		
-		btnAdd = new JButton("Tambah Koleksi");
-		btnAdd.addActionListener(new ActionListener() {
+		btnDisplayAll = new JButton("Tampilkan Semua Koleksi");
+		btnDisplayAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				judulField.setEnabled(true);
-				pengarangField.setEnabled(true);
-				tahunField.setEnabled(true);
+				
 			}
 		});
-		btnAdd.setBounds(133, 11, 120, 30);
-		contentPane.add(btnAdd);
+		btnDisplayAll.setBounds(10, 11, 189, 30);
+		contentPane.add(btnDisplayAll);
 		
 		btnSortByTitle = new JButton("Sort by Judul");
-		btnSortByTitle.setBounds(263, 11, 108, 30);
+		btnSortByTitle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				btnSortByJudulAct(event);
+			}
+		});
+		btnSortByTitle.setBounds(224, 11, 123, 30);
 		contentPane.add(btnSortByTitle);
 		
 		btnSortByYear = new JButton("Sort by Tahun");
-		btnSortByYear.setBounds(381, 11, 109, 30);
+		btnSortByYear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnSortByYearAct(e);
+			}
+		});
+		btnSortByYear.setBounds(357, 11, 133, 30);
 		contentPane.add(btnSortByYear);
 		
 		SearchField = new JTextField();
@@ -173,26 +130,22 @@ public class Collections extends JFrame{
 		});
 		btnSearch.setBounds(685, 11, 89, 30);
 		contentPane.add(btnSearch);
-
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 52, 764, 2);
 		contentPane.add(separator);
 		
+		kodeField = new JTextField();
+		kodeField.setBounds(10, 96, 243, 30);
+		kodeField.setColumns(10);
+		contentPane.add(kodeField);
+		
 		judulField = new JTextField();
-		judulField.setEnabled(false);
-		judulField.setBounds(10, 96, 243, 30);
+		judulField.setBounds(10, 162, 243, 30);
 		judulField.setColumns(10);
 		contentPane.add(judulField);
 		
-		pengarangField = new JTextField();
-		pengarangField.setEnabled(false);
-		pengarangField.setBounds(10, 162, 243, 30);
-		pengarangField.setColumns(10);
-		contentPane.add(pengarangField);
-		
 		tahunField = new JTextField();
-		tahunField.setEnabled(false);
 		tahunField.setBounds(10, 281, 243, 30);
 		contentPane.add(tahunField);
 		tahunField.setColumns(10);
@@ -226,40 +179,106 @@ public class Collections extends JFrame{
 		btnSimpan.setBounds(144, 414, 109, 36);
 		contentPane.add(btnSimpan);
 		
-		table_2 = new JTable();
-		table_2.setBounds(263, 52, 511, 420);
-		getContentPane().add(table_2);
+		textPesan = new JTextArea();
+		textPesan.setLineWrap(true);
+		textPesan.setForeground(Color.WHITE);
+		textPesan.setFont(new Font("Arial", Font.PLAIN, 14));
+		textPesan.setBackground(Color.GRAY);
+		textPesan.setBounds(10, 322, 243, 85);
+		getContentPane().add(textPesan);
 		
+		textDisplay = new JTextArea();
+		textDisplay.setBounds(275, 65, 499, 385);
+		getContentPane().add(textDisplay);
 		
-		
-//		table = new JTable();
-//		table.setBounds(268, 66, 491, 406);
-//		getContentPane().add(table);
-		
-		
-//		DefaultTableModel tableModel_2 = new DefaultTableModel(header, 0);
-		//table.add(tableModel_2);
+		table = new JTable();
+		table.setBounds(265, 53, 499, 385);
+		getContentPane().add(table);
 		
 		setTitle("Book Collections");
 		setVisible(true);
 	}
 	
+	//Sort By Judul
+	private void btnSortByJudulAct(ActionEvent event) {
+		try {
+			items = as.getSortBukuByJudul();
+			displayBookList();
+		} catch (BookException e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+	}
+	
+	//Display All Book
+	private void btnDisplayAllAct(ActionEvent event) {
+		try {
+			items = as.getAllBukuItem();
+		} catch (BookException e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+		displayBookList();
+	}
+	
+	//Sort By Year
+	private void btnSortByYearAct(ActionEvent event) {
+//		try {
+//			//items = as.getSortBukuByTahun();
+//			displayBookList();
+//		} catch (BookException e) {
+//			// TODO: handle exception
+//			System.out.println(e);
+//		}
+	}
+	
 	//add book implementation here
 	private void btnSimpanAction(ActionEvent event) {
+
+		if (
+				!(kodeField.getText().equals("")) &&
+				!(judulField.getText().equals("")) &&
+				!(tahunField.getText().equals(""))
+				) {
+			BukuItem itemb = new BukuItem(kodeField.getText(), 
+											judulField.getText(), 
+											(Kategori)categoriBox.getSelectedItem(), 
+											Integer.parseInt(tahunField.getText()));		
 		
-		judulField.setEnabled(false);
-		pengarangField.setEnabled(false);
-		tahunField.setEnabled(false);
+			try {
+				as.addBukuItem(itemb);
+				items = as.getAllBukuItem();
+				displayBookList();
+			} catch (BookException e) {
+				System.out.println(e);
+			}
+		} else {
+			textPesan.setText("Terjadi kelahan --- ISBN, Judul, dan Tahun harus diisi!!!");
+		}
+		kodeField.setText("");
+		judulField.setText("");
+		tahunField.setText("");
 	}
 	
 	//get book by implementation here
 	private void btnSearchAction(ActionEvent event) {
+		try {
+			items = as.getBukuItem(SearchField.getText());
+			displayBookList();
+		} catch (BookException e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+	}
+	
+	//displaying Book List
+	private void displayBookList() {
+		table.setModel(tb);
+		
+		textDisplay.setText(items.toString());
 		
 	}
 	
-	private void displayBookList() {
-		
-	}
 	
 	public static void main(String[] args) {
 		Collections application = new Collections();
@@ -267,5 +286,3 @@ public class Collections extends JFrame{
 					
 	}
 }
-
-
